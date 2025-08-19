@@ -2,11 +2,20 @@ window.API_BASE_URL = "https://loginauth-juvw.onrender.com";
 
 const $ = (id) => document.getElementById(id);
 const API_BASE_URL = (window.API_BASE_URL || "").replace(/\/$/, "");
-const toast = (msg) => {
+let toastTimer;
+const toast = (message, type = "success") => {
   const t = $("toast");
-  t.textContent = msg;
+  t.textContent = message;
   t.classList.remove("hidden");
-  setTimeout(() => t.classList.add("hidden"), 2000);
+  t.classList.remove("success", "error", "show");
+  t.classList.add(type);
+  // Reinicia transição
+  void t.offsetWidth;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.classList.remove("show", "success", "error");
+  }, 2500);
 };
 
 async function api(path, options = {}) {
