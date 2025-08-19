@@ -1,3 +1,5 @@
+window.API_BASE_URL = "https://loginauth-juvw.onrender.com";
+
 const $ = (id) => document.getElementById(id);
 const API_BASE_URL = (window.API_BASE_URL || "").replace(/\/$/, "");
 const toast = (msg) => {
