@@ -1,5 +1,3 @@
-window.API_BASE_URL = "https://loginauth-juvw.onrender.com";
-
 const $ = (id) => document.getElementById(id);
 const API_BASE_URL = (window.API_BASE_URL || "").replace(/\/$/, "");
 const toast = (msg) => {
@@ -41,6 +39,25 @@ function createParticles() {
     particle.style.animationDuration = 3 + Math.random() * 6 + "s";
     particlesContainer.appendChild(particle);
   }
+}
+
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    method: options.method || "GET",
+    headers: { "Content-Type": "application/json" },
+    body: options.body ? JSON.stringify(options.body) : undefined,
+    credentials: "include",
+  });
+  if (!res.ok) {
+    let err = "Erro na requisição";
+    try {
+      const data = await res.json();
+      err = data.detail || err;
+    } catch {}
+    throw new Error(err);
+  }
+  const ct = res.headers.get("content-type") || "";
+  return ct.includes("application/json") ? res.json() : res.text();
 }
 
 async function refreshMe() {
